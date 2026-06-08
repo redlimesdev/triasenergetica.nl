@@ -1,0 +1,365 @@
+<!DOCTYPE html>
+<html lang="nl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Dit domein is te koop / This domain is for sale</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display&family=DM+Sans:wght@400;500&display=swap" rel="stylesheet">
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  :root {
+    --bg: #F7F5F0;
+    --surface: #FFFFFF;
+    --text: #1A1A18;
+    --muted: #6B6B65;
+    --accent: #1A1A18;
+    --border: rgba(26,26,24,0.12);
+    --radius: 10px;
+    --error: #A32D2D;
+    --success: #0F6E56;
+  }
+
+  body {
+    font-family: 'DM Sans', sans-serif;
+    background: var(--bg);
+    color: var(--text);
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 2rem 1rem;
+  }
+
+  .card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 16px;
+    padding: 3rem 2.5rem;
+    width: 100%;
+    max-width: 520px;
+  }
+
+  .tag {
+    display: inline-block;
+    font-size: 11px;
+    font-weight: 500;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--muted);
+    border: 1px solid var(--border);
+    border-radius: 100px;
+    padding: 4px 12px;
+    margin-bottom: 1.5rem;
+  }
+
+  h1 {
+    font-family: 'DM Serif Display', serif;
+    font-size: clamp(1.75rem, 5vw, 2.5rem);
+    font-weight: 400;
+    line-height: 1.15;
+    margin-bottom: 0.5rem;
+  }
+
+  .subtitle {
+    font-size: 14px;
+    color: var(--muted);
+    margin-bottom: 2rem;
+    line-height: 1.6;
+  }
+
+  .divider {
+    height: 1px;
+    background: var(--border);
+    margin: 2rem 0;
+  }
+
+  .form-group {
+    margin-bottom: 1.25rem;
+  }
+
+  label {
+    display: block;
+    font-size: 13px;
+    font-weight: 500;
+    margin-bottom: 6px;
+    color: var(--text);
+  }
+
+  label .req {
+    color: var(--error);
+    margin-left: 2px;
+  }
+
+  label .lang {
+    font-weight: 400;
+    color: var(--muted);
+    font-size: 12px;
+  }
+
+  input, textarea {
+    width: 100%;
+    padding: 10px 14px;
+    font-family: 'DM Sans', sans-serif;
+    font-size: 14px;
+    color: var(--text);
+    background: var(--bg);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    outline: none;
+    transition: border-color 0.15s;
+    appearance: none;
+  }
+
+  input:focus, textarea:focus {
+    border-color: var(--accent);
+  }
+
+  input.error, textarea.error {
+    border-color: var(--error);
+  }
+
+  textarea {
+    resize: vertical;
+    min-height: 90px;
+  }
+
+  .field-error {
+    font-size: 12px;
+    color: var(--error);
+    margin-top: 5px;
+    display: none;
+  }
+
+  .field-error.visible {
+    display: block;
+  }
+
+  .captcha-row {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    background: var(--bg);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    padding: 12px 14px;
+  }
+
+  .captcha-question {
+    font-size: 14px;
+    color: var(--text);
+    flex: 1;
+  }
+
+  .captcha-input {
+    width: 72px;
+    text-align: center;
+    padding: 8px 10px;
+    flex-shrink: 0;
+  }
+
+  .btn {
+    width: 100%;
+    padding: 13px;
+    background: var(--accent);
+    color: #fff;
+    font-family: 'DM Sans', sans-serif;
+    font-size: 15px;
+    font-weight: 500;
+    border: none;
+    border-radius: var(--radius);
+    cursor: pointer;
+    margin-top: 1.5rem;
+    transition: opacity 0.15s;
+  }
+
+  .btn:hover { opacity: 0.85; }
+  .btn:disabled { opacity: 0.5; cursor: not-allowed; }
+
+  .success-msg {
+    display: none;
+    text-align: center;
+    padding: 1.5rem 0 0.5rem;
+  }
+
+  .success-msg .check {
+    font-size: 2rem;
+    margin-bottom: 0.75rem;
+  }
+
+  .success-msg p {
+    font-size: 15px;
+    color: var(--success);
+    font-weight: 500;
+    margin-bottom: 0.25rem;
+  }
+
+  .success-msg small {
+    font-size: 13px;
+    color: var(--muted);
+  }
+
+  footer {
+    margin-top: 1.5rem;
+    font-size: 12px;
+    color: var(--muted);
+    text-align: center;
+  }
+
+  @media (max-width: 560px) {
+    .card { padding: 2rem 1.25rem; }
+  }
+</style>
+</head>
+<body>
+
+<div class="card">
+  <span class="tag">Te koop &nbsp;·&nbsp; For sale</span>
+
+  <h1>Dit domein<br>is te koop.</h1>
+  <p class="subtitle">
+    Geïnteresseerd? Plaats een bod via het formulier.<br>
+    <span style="font-size:13px;">Interested? Place a bid using the form below.</span>
+  </p>
+
+  <div class="divider"></div>
+
+  <form id="bidForm" novalidate>
+
+    <div class="form-group">
+      <label for="name">Naam / Name <span class="req">*</span></label>
+      <input type="text" id="name" name="name" placeholder="Voor- en achternaam" autocomplete="name">
+      <div class="field-error" id="err-name">Vul uw naam in. / Please enter your name.</div>
+    </div>
+
+    <div class="form-group">
+      <label for="email">E-mailadres / E-mail address <span class="req">*</span></label>
+      <input type="email" id="email" name="email" placeholder="u@voorbeeld.nl" autocomplete="email">
+      <div class="field-error" id="err-email">Voer een geldig e-mailadres in. / Enter a valid email address.</div>
+    </div>
+
+    <div class="form-group">
+      <label for="bid">Bod in euro's excl. btw / Bid in euros excl. VAT <span class="req">*</span></label>
+      <input type="number" id="bid" name="bid" placeholder="" min="1">
+      <div class="field-error" id="err-bid">Voer een geldig bod in (minimaal €1). / Enter a valid bid (minimum €1).</div>
+    </div>
+
+    <div class="form-group">
+      <label for="remark">Opmerking / Remark</label>
+      <textarea id="remark" name="remark" placeholder="Optioneel / Optional"></textarea>
+    </div>
+
+    <div class="form-group">
+      <label>Verificatie / Verification <span class="req">*</span> <span class="lang">— geen robot? / not a robot?</span></label>
+      <div class="captcha-row">
+        <span class="captcha-question" id="captchaQuestion"></span>
+        <input type="number" class="captcha-input" id="captchaAnswer" placeholder="?" autocomplete="off">
+      </div>
+      <div class="field-error" id="err-captcha">Antwoord onjuist. / Incorrect answer.</div>
+    </div>
+
+    <!-- honeypot -->
+    <input type="text" name="_gotcha" style="display:none" tabindex="-1" autocomplete="off">
+    <input type="hidden" name="_subject" value="Nieuw bod op domein / New domain bid">
+
+    <button type="submit" class="btn" id="submitBtn">Bod versturen / Submit bid</button>
+
+  </form>
+
+  <div class="success-msg" id="successMsg">
+    <div class="check">✓</div>
+    <p>Bod ontvangen! / Bid received!</p>
+    <small>We nemen zo snel mogelijk contact op. / We will get back to you as soon as possible.</small>
+  </div>
+
+</div>
+
+<footer>Domeinverkoop via privébieding &nbsp;·&nbsp; Private domain auction</footer>
+
+<script>
+  (function() {
+    var nums = [
+      [3,4],[5,2],[6,3],[4,5],[7,2],[8,3],[9,4],[2,6],[5,5],[3,7]
+    ];
+    var pair = nums[Math.floor(Math.random() * nums.length)];
+    var a = pair[0], b = pair[1];
+    document.getElementById('captchaQuestion').textContent =
+      'Wat is ' + a + ' + ' + b + '?  /  What is ' + a + ' + ' + b + '?';
+
+    var form = document.getElementById('bidForm');
+    var submitBtn = document.getElementById('submitBtn');
+
+    function validateEmail(v) {
+      return /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/.test(v.trim());
+    }
+
+    function setError(field, errId, show) {
+      var el = document.getElementById(field);
+      var err = document.getElementById(errId);
+      if (show) {
+        el.classList.add('error');
+        err.classList.add('visible');
+      } else {
+        el.classList.remove('error');
+        err.classList.remove('visible');
+      }
+      return !show;
+    }
+
+    form.addEventListener('submit', function(e) {
+      e.preventDefault();
+
+      var name = document.getElementById('name').value.trim();
+      var email = document.getElementById('email').value.trim();
+      var bid = document.getElementById('bid').value;
+      var answer = parseInt(document.getElementById('captchaAnswer').value, 10);
+
+      var ok = true;
+      ok = setError('name', 'err-name', name.length < 2) && ok;
+      ok = setError('email', 'err-email', !validateEmail(email)) && ok;
+      ok = setError('bid', 'err-bid', !bid || parseFloat(bid) < 1) && ok;
+      ok = setError('captchaAnswer', 'err-captcha', isNaN(answer) || answer !== a + b) && ok;
+
+      if (!ok) return;
+
+      submitBtn.disabled = true;
+      submitBtn.textContent = 'Versturen… / Sending…';
+
+      var data = {
+        name: name,
+        email: email,
+        bid: '€' + parseFloat(bid).toLocaleString('nl-NL') + ' excl. btw',
+        remark: document.getElementById('remark').value.trim() || '—',
+        _subject: 'Nieuw bod op domein / New domain bid'
+      };
+
+      fetch('https://formspree.io/f/xnjydzba', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json', 'Accept': 'application/json' },
+        body: JSON.stringify(data)
+      })
+      .then(function(r) { return r.json(); })
+      .then(function(res) {
+        if (res.ok || res.error === undefined) {
+          form.style.display = 'none';
+          document.getElementById('successMsg').style.display = 'block';
+        } else {
+          submitBtn.disabled = false;
+          submitBtn.textContent = 'Bod versturen / Submit bid';
+          alert('Er ging iets mis. Probeer het opnieuw. / Something went wrong. Please try again.');
+        }
+      })
+      .catch(function() {
+        submitBtn.disabled = false;
+        submitBtn.textContent = 'Bod versturen / Submit bid';
+        alert('Er ging iets mis. Probeer het opnieuw. / Something went wrong. Please try again.');
+      });
+    });
+  })();
+</script>
+
+</body>
+</html>
