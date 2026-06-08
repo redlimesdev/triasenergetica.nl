@@ -220,6 +220,7 @@
   <span class="tag">Te koop &nbsp;·&nbsp; For sale</span>
 
   <h1>Dit domein<br>is te koop.</h1>
+  <p style="font-family:'DM Serif Display',serif; font-size:clamp(1rem,3vw,1.35rem); color:var(--muted); font-weight:400; margin-bottom:0.25rem;">This domain is for sale.</p>
   <p class="subtitle">
     Geïnteresseerd? Plaats een bod via het formulier.<br>
     <span style="font-size:13px;">Interested? Place a bid using the form below.</span>
@@ -243,7 +244,7 @@
 
     <div class="form-group">
       <label for="bid">Bod in euro's excl. btw / Bid in euros excl. VAT <span class="req">*</span></label>
-      <input type="number" id="bid" name="bid" placeholder="" min="1">
+      <div style="display:flex;align-items:center;background:var(--bg);border:1px solid var(--border);border-radius:var(--radius);overflow:hidden;" id="bidWrapper"><span style="padding:0 12px;font-size:15px;color:var(--muted);user-select:none;">€</span><input type="text" id="bid" name="bid" inputmode="numeric" autocomplete="off" style="border:none;background:transparent;padding:10px 14px 10px 0;flex:1;outline:none;font-family:inherit;font-size:14px;color:var(--text);"></div>
       <div class="field-error" id="err-bid">Voer een geldig bod in (minimaal €1). / Enter a valid bid (minimum €1).</div>
     </div>
 
@@ -291,21 +292,40 @@
 
     var form = document.getElementById('bidForm');
     var submitBtn = document.getElementById('submitBtn');
+    var bidInput = document.getElementById('bid');
+    var bidWrapper = document.getElementById('bidWrapper');
+
+    bidInput.addEventListener('input', function() {
+      var raw = this.value.replace(/\./g, '').replace(/\D/g, '');
+      if (raw === '') { this.value = ''; return; }
+      this.value = parseInt(raw, 10).toLocaleString('nl-NL');
+    });
+
+    bidInput.addEventListener('focus', function() {
+      bidWrapper.style.borderColor = 'var(--accent)';
+    });
+    bidInput.addEventListener('blur', function() {
+      bidWrapper.style.borderColor = 'var(--border)';
+    });
 
     function validateEmail(v) {
       return /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/.test(v.trim());
     }
 
+    function getRawBid() {
+      return parseInt(bidInput.value.replace(/\./g, ''), 10);
+    }
+
     function setError(field, errId, show) {
-      var el = document.getElementById(field);
       var err = document.getElementById(errId);
-      if (show) {
-        el.classList.add('error');
-        err.classList.add('visible');
-      } else {
-        el.classList.remove('error');
-        err.classList.remove('visible');
+      if (field === 'bid') {
+        if (show) { bidWrapper.style.borderColor = 'var(--error)'; err.classList.add('visible'); }
+        else { bidWrapper.style.borderColor = 'var(--border)'; err.classList.remove('visible'); }
+        return !show;
       }
+      var el = document.getElementById(field);
+      if (show) { el.classList.add('error'); err.classList.add('visible'); }
+      else { el.classList.remove('error'); err.classList.remove('visible'); }
       return !show;
     }
 
@@ -314,13 +334,13 @@
 
       var name = document.getElementById('name').value.trim();
       var email = document.getElementById('email').value.trim();
-      var bid = document.getElementById('bid').value;
+      var rawBid = getRawBid();
       var answer = parseInt(document.getElementById('captchaAnswer').value, 10);
 
       var ok = true;
       ok = setError('name', 'err-name', name.length < 2) && ok;
       ok = setError('email', 'err-email', !validateEmail(email)) && ok;
-      ok = setError('bid', 'err-bid', !bid || parseFloat(bid) < 1) && ok;
+      ok = setError('bid', 'err-bid', isNaN(rawBid) || rawBid < 1) && ok;
       ok = setError('captchaAnswer', 'err-captcha', isNaN(answer) || answer !== a + b) && ok;
 
       if (!ok) return;
@@ -331,8 +351,8 @@
       var data = {
         name: name,
         email: email,
-        bid: '€' + parseFloat(bid).toLocaleString('nl-NL') + ' excl. btw',
-        remark: document.getElementById('remark').value.trim() || '—',
+        bid: '\u20ac ' + rawBid.toLocaleString('nl-NL') + ' excl. btw',
+        remark: document.getElementById('remark').value.trim() || '\u2014',
         _subject: 'Nieuw bod op domein / New domain bid'
       };
 
